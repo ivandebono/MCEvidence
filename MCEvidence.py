@@ -715,7 +715,7 @@ class MCEvidence(object):
         
         if rand and not self.brange is None:
             if nsamples>ntot:
-                self.logger.error('nsamples=%s, ntotal_chian=%s'%(nsamples,ntot))
+                self.logger.error('nsamples=%s, ntotal_chainn=%s'%(nsamples,ntot))
                 raise
             
             idx=np.random.randint(0,high=ntot,size=nsamples)
