@@ -699,7 +699,7 @@ class MCEvidence(object):
             elif bscale=='linear':   
                 powmin,powmax=self.get_batch_range()
                 self.bsize=np.linspace(powmin,powmax,self.nbatch,dtype=np.int)
-                self.powers=np.array([int(log10(x)) for x in self.nchain])
+                self.powers=np.array([int(np.log10(x)) for x in self.nchain])
                 self.nchain=self.bsize
 
             else: #constant
