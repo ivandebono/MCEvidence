@@ -18,7 +18,7 @@ to the output files is
 Notes
 ---------
 
-The analysis using a single MPI process takes about ~30mins.
+The full analysis using a single MPI process takes about ~30mins.
 
 
 Examples
@@ -171,9 +171,8 @@ if rank==0:
 #------- Path and sub-directory folders ------------
 #---------------------------------------------------
 #rootdir='COM_CosmoParams_fullGrid_R2.00'
-home='Your home directory
-chaindir='Directory containing chains to analyze'
-rootdir=os.path.join(home,chaindir)
+home='/Users/ivandebono'
+rootdir=os.path.join(home,'COM_CosmoParams_fullGrid_R2.00')
 if not os.path.exists(rootdir): print('The folder does not exist')
 
 #list of cosmology parameters
@@ -221,16 +220,25 @@ def avail_model_list(dd,nmax=0,sorter=Models['model']):
     df=pd.DataFrame()
     l=glob.glob( '{0}/*/*/*_{1}_1.txt'.format(rootdir,dd) )
     df['l1']=[x.split('_1')[0] for x in l]    
-    df['l2']=df['l1'].apply(lambda x:x.split('/')[1])
-    
+    df['l2']=(df['l1'].apply(lambda x:x.split(str(rootdir)+'/')[1]))
+    df['l2']=(df['l2'].apply(lambda x:x.split('/')[0]))
+
     #sort df based on sorter order
+
+    
     if sorter:
         df['l2'] = df['l2'].astype("category")
-        df['l2'].cat.set_categories(sorter, inplace=True)    
+        df['l2'].cat.set_categories(sorter, inplace=True)   ###FIND SOME WAY TO TURN NAMES INTO STRINGS WITH INVERTED COMMAS  
+        print(df['l2'])
+
     df=df.sort_values('l2')
 
     if nmax>0:
         df=df.iloc[0:nmax]
+
+
+    
+
     return df['l1'].values,df['l2'].values
 
 def iscosmo_param(p,l=cosmo_params):
@@ -321,6 +329,7 @@ for ipp in range(lpp[rank]):  #loop over data
     path_list, name=avail_model_list(dd,nmax=nmodel)
     mce=np.zeros((len(path_list),len(mce_cols)))
     mce_info={ k:[] for k in mce_info_cols }
+    
 
     # prior volumes will be normalized by
     # the volume of the base model 
@@ -416,7 +425,7 @@ comm.Barrier()
 
 
 #----------------------------------------------------
-#-- concatenate all output text files to a single file
+#-- concatnate all output text files to a single file
 #----------------------------------------------------
 if rank==0:
     fmain='{}/mce_planck_fullgrid.txt'.format(outdir)
@@ -446,7 +455,7 @@ if rank==0:
 
     # Save a dictionary into a pickle file.
     fout_pkl='{0}/delta_lnE_all_dict.pkl'.format(outdir_data)
-    logger.info('writing : %s '%fout_pkl)
+    logger.info('writting : %s '%fout_pkl)
     pickle.dump(all_df, open(fout_pkl, "wb") )
 
     #concat all
@@ -471,7 +480,7 @@ if rank==0:
 
     #
     fout='{0}/delta_lnE_all.txt'.format(outdir)
-    #logger.info('writing : %s '%fout)    
+    #logger.info('writting : %s '%fout)    
     fhandle=open(fout, 'w')    
     fhandle.write('\n')
     fhandle.write('############## RootDirectory={} ########\n'.format(rootdir))
