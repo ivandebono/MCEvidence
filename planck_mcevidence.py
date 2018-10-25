@@ -171,8 +171,9 @@ if rank==0:
 #------- Path and sub-directory folders ------------
 #---------------------------------------------------
 #rootdir='COM_CosmoParams_fullGrid_R2.00'
-home='/Users/ivandebono'
-rootdir=os.path.join(home,'COM_CosmoParams_fullGrid_R2.00')
+home='Your home directory
+chaindir='Directory containing chains to analyze'
+rootdir=os.path.join(home,chaindir)
 if not os.path.exists(rootdir): print('The folder does not exist')
 
 #list of cosmology parameters
