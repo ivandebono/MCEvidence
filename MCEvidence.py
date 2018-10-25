@@ -715,14 +715,14 @@ class MCEvidence(object):
         
         if rand and not self.brange is None:
             if nsamples>ntot:
-                self.logger.error('nsamples=%s, ntotal_chainn=%s'%(nsamples,ntot))
+                self.logger.error('nsamples=%s, ntotal_chain=%s'%(nsamples,ntot))
                 raise
             
             idx=np.random.randint(0,high=ntot,size=nsamples)
         else:
             idx=np.arange(istart,nsamples+istart)
 
-        self.logger.info('requested nsamples=%s, ntotal_chian=%s'%(nsamples,ntot))
+        self.logger.info('requested nsamples=%s, ntotal_chain=%s'%(nsamples,ntot))
         s,lnp,w=self.gd.arrays()            
                 
         return s[idx,0:self.ndim],lnp[idx],w[idx]
