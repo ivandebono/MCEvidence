@@ -170,7 +170,10 @@ if rank==0:
 #---------------------------------------------------
 #------- Path and sub-directory folders ------------
 #---------------------------------------------------
-rootdir='COM_CosmoParams_fullGrid_R2.00'
+#rootdir='COM_CosmoParams_fullGrid_R2.00'
+home='/Users/ivandebono'
+rootdir=os.path.join(home,'COM_CosmoParams_fullGrid_R2.00')
+if not os.path.exists(rootdir): print('The folder does not exist')
 
 #list of cosmology parameters
 cosmo_params=['omegabh2','omegach2','theta','tau','omegak','mnu','meffsterile','w','wa',
@@ -240,7 +243,7 @@ def params_info(fname):
     Extract parameter names, ranges, and prior space volume
     from CosmoMC *.ranges file
     '''
-    par=np.genfromtxt(fname+'.ranges',dtype=None,names=('name','min','max'))#,unpack=True)
+    par=np.genfromtxt(fname+'.ranges',dtype=None,encoding=None,names=('name','min','max'))#,unpack=True)
     parName=par['name']
     parMin=par['min']
     parMax=par['max']
