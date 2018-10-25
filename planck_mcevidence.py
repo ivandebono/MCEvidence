@@ -18,7 +18,7 @@ to the output files is
 Notes
 ---------
 
-The full analysis using a single MPI process takes about ~30mins.
+The analysis using a single MPI process takes about ~30mins.
 
 
 Examples
@@ -416,7 +416,7 @@ comm.Barrier()
 
 
 #----------------------------------------------------
-#-- concatnate all output text files to a single file
+#-- concatenate all output text files to a single file
 #----------------------------------------------------
 if rank==0:
     fmain='{}/mce_planck_fullgrid.txt'.format(outdir)
@@ -446,7 +446,7 @@ if rank==0:
 
     # Save a dictionary into a pickle file.
     fout_pkl='{0}/delta_lnE_all_dict.pkl'.format(outdir_data)
-    logger.info('writting : %s '%fout_pkl)
+    logger.info('writing : %s '%fout_pkl)
     pickle.dump(all_df, open(fout_pkl, "wb") )
 
     #concat all
@@ -463,7 +463,7 @@ if rank==0:
         
     # Save a dictionary into a pickle file.
     fout_pkl='{0}/delta_lnE_all_df.pkl'.format(outdir_data)
-    logger.info('writting : %s '%fout_pkl)    
+    logger.info('writing : %s '%fout_pkl)    
     pickle.dump(big_df, open(fout_pkl, "wb") )
     
     # #read
@@ -471,7 +471,7 @@ if rank==0:
 
     #
     fout='{0}/delta_lnE_all.txt'.format(outdir)
-    #logger.info('writting : %s '%fout)    
+    #logger.info('writing : %s '%fout)    
     fhandle=open(fout, 'w')    
     fhandle.write('\n')
     fhandle.write('############## RootDirectory={} ########\n'.format(rootdir))
