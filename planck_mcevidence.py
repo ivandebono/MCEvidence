@@ -171,7 +171,7 @@ if rank==0:
 #------- Path and sub-directory folders ------------
 #---------------------------------------------------
 #rootdir='COM_CosmoParams_fullGrid_R2.00'
-home='/Users/ivandebono'
+home='YOUR/OWN/HOME/PATH'
 rootdir=os.path.join(home,'COM_CosmoParams_fullGrid_R2.00')
 if not os.path.exists(rootdir): print('The folder does not exist')
 
