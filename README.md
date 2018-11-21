@@ -1,7 +1,7 @@
 # MCEvidence
 A python package implementing the MARGINAL LIKELIHOODS FROM MONTE CARLO MARKOV CHAINS algorithm described in Heavens et. al. (2017)
 
-This code is tested in Python 2 version 2.7.12 and Python 3 version 3.5.2.
+This code is tested in Python 2 version 2.7.12 and Python 3 version 3.6.6
 
 # Notes
 
