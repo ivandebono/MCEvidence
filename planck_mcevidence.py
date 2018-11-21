@@ -170,10 +170,7 @@ if rank==0:
 #---------------------------------------------------
 #------- Path and sub-directory folders ------------
 #---------------------------------------------------
-#rootdir='COM_CosmoParams_fullGrid_R2.00'
-home='YOUR/OWN/HOME/PATH'
-rootdir=os.path.join(home,'COM_CosmoParams_fullGrid_R2.00')
-if not os.path.exists(rootdir): print('The folder does not exist')
+rootdir='/Users/ivandebono/COM_CosmoParams_fullGrid_R2.00'
 
 #list of cosmology parameters
 cosmo_params=['omegabh2','omegach2','theta','tau','omegak','mnu','meffsterile','w','wa',
@@ -220,25 +217,16 @@ def avail_model_list(dd,nmax=0,sorter=Models['model']):
     df=pd.DataFrame()
     l=glob.glob( '{0}/*/*/*_{1}_1.txt'.format(rootdir,dd) )
     df['l1']=[x.split('_1')[0] for x in l]    
-    df['l2']=(df['l1'].apply(lambda x:x.split(str(rootdir)+'/')[1]))
-    df['l2']=(df['l2'].apply(lambda x:x.split('/')[0]))
-
-    #sort df based on sorter order
-
+    df['l2']=df['l1'].apply(lambda x:x.split('/')[1])
     
+    #sort df based on sorter order
     if sorter:
         df['l2'] = df['l2'].astype("category")
-        df['l2'].cat.set_categories(sorter, inplace=True)   ###FIND SOME WAY TO TURN NAMES INTO STRINGS WITH INVERTED COMMAS  
-        print(df['l2'])
-
+        df['l2'].cat.set_categories(sorter, inplace=True)    
     df=df.sort_values('l2')
 
     if nmax>0:
         df=df.iloc[0:nmax]
-
-
-    
-
     return df['l1'].values,df['l2'].values
 
 def iscosmo_param(p,l=cosmo_params):
@@ -252,7 +240,7 @@ def params_info(fname):
     Extract parameter names, ranges, and prior space volume
     from CosmoMC *.ranges file
     '''
-    par=np.genfromtxt(fname+'.ranges',dtype=None,encoding=None,names=('name','min','max'))#,unpack=True)
+    par=np.genfromtxt(fname+'.ranges',dtype=None,names=('name','min','max'),encoding=None)#,unpack=True)
     parName=par['name']
     parMin=par['min']
     parMax=par['max']
@@ -329,7 +317,6 @@ for ipp in range(lpp[rank]):  #loop over data
     path_list, name=avail_model_list(dd,nmax=nmodel)
     mce=np.zeros((len(path_list),len(mce_cols)))
     mce_info={ k:[] for k in mce_info_cols }
-    
 
     # prior volumes will be normalized by
     # the volume of the base model 
@@ -354,7 +341,7 @@ for ipp in range(lpp[rank]):  #loop over data
 
             for icc, cext in enumerate(chains_extension_list):
                 fchain=fname+cext
-                e,info = MCEvidence(fchain,ndim=ndim,isfunc=h0_gauss_lnp,
+                e,info = MCEvidence(fchain,ndim=ndim, #isfunc=h0_gauss_lnp,
                                     priorvolume=prior_volume,
                                     kmax=kmax,verbose=verbose,burnlen=burnfrac,
                                     thinlen=thinfrac).evidence(info=True,pos_lnp=False)
@@ -472,7 +459,7 @@ if rank==0:
         
     # Save a dictionary into a pickle file.
     fout_pkl='{0}/delta_lnE_all_df.pkl'.format(outdir_data)
-    logger.info('writing : %s '%fout_pkl)    
+    logger.info('writting : %s '%fout_pkl)    
     pickle.dump(big_df, open(fout_pkl, "wb") )
     
     # #read

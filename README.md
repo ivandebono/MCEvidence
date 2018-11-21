@@ -1,11 +1,26 @@
 # MCEvidence
 A python package implementing the MARGINAL LIKELIHOODS FROM MONTE CARLO MARKOV CHAINS algorithm described in Heavens et. al. (2017)
 
+This code is tested in Python 2 version 2.7.12 and Python 3 version 3.5.2.
+
 # Notes
 
 The MCEvidence algorithm is implemented using scikit nearest neighbour code.
 
+# Installation
 
+To install this project into your machine using pip, do the following
+                        
+     $ git clone https://github.com/yabebalFantaye/MCEvidence
+     $ cd MCEvidence
+     $ pip install . --editable
+
+The "--editable" or "-e" extension in the last command is to install the project in the editable mode.
+
+To install this project with pip without clonning
+
+     $ pip install git+https://github.com/yabebalFantaye/MCEvidence
+     
 # Examples
  
 ## To run the evidence estimation from an ipython terminal or notebook
@@ -42,16 +57,34 @@ The output is:
                         *_1.txt (default=None - use all available)
        -np NDIM, --ndim NDIM
                         How many parameters to use (default=None - use all
-                        params)
+                        params)             
        -b BURNFRAC, --burnfrac BURNFRAC, --burnin BURNFRAC, --remove BURNFRAC
                         Burn-in fraction
        -t THINFRAC, --thin THINFRAC, --thinfrac THINFRAC
                         Thinning fraction
-       -v VERBOSE, --verbose VERBOSE
-                        increase output verbosity
-       --cosmo              
-              	        Flag to compute prior_volume using cosmological
-                        parameters only 
+       -vb VERBOSE, --verbose VERBOSE
+                        Verbosity of the code while running: The mapping between verbose number
+                        and the logging module levels are: 0: WARNNING, 1: INFO, 2: DEBUG
+                        setting verbose>2 outputs EVERYTHING
+       --paramsfile
+                        text file name that contains additional parameter names to be consider as cosmological parameters
+       --allparams              
+              	        Flag to consider all parameters - prior_volume is computed using all parameters. By default only 
+                        cosmological parameters listed in iscosmo_params function is considered.
+                        For arbitrary parameter names, please modify the code accordingly.
+                        If allparams is passed, consider using ndim<20 to get resonable evidence estimation.
+
+       -np, --pvolume PRIORVOLUME
+                        The prior volume to use if it can not be computed internally using cosmomc *.ranges or
+                        montepython log.params files.
+
+       --cross
+                        Flag to split chain (s) into two sets to estimate cross Evidence. The DEFAULT is auto Evidence.
+                        Cross EVIDENCE is computed using two independent chains. This means Nearest Neighbour of
+                        a point  "A" in MCMC sample MC1 is searched in MCMC sample MC2.
+                        THE ERROR ON THE EVIDENCE FROM (AUTO) EVIDENCE IS LARGER THAN THE CROSS EVIDENCE BY ~SQRT(2).
+                        This is the result of : if the nearest neighbour of A is B, then the NN to B is LIKELY to be A.
+
 
 # If you use the code, please cite the following paper
 
