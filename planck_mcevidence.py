@@ -217,7 +217,7 @@ def avail_model_list(dd,nmax=0,sorter=Models['model']):
     df=pd.DataFrame()
     l=glob.glob( '{0}/*/*/*_{1}_1.txt'.format(rootdir,dd) )
     df['l1']=[x.split('_1')[0] for x in l]    
-    df['l2']=df['l1'].apply(lambda x:x.split('/')[1])
+    df['l2']=df['l1'].apply(lambda x:x.split('/')[-3])
     
     #sort df based on sorter order
     if sorter:
