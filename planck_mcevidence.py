@@ -170,7 +170,7 @@ if rank==0:
 #---------------------------------------------------
 #------- Path and sub-directory folders ------------
 #---------------------------------------------------
-rootdir='/Users/ivandebono/COM_CosmoParams_fullGrid_R2.00'
+rootdir='COM_CosmoParams_fullGrid_R2.00'
 
 #list of cosmology parameters
 cosmo_params=['omegabh2','omegach2','theta','tau','omegak','mnu','meffsterile','w','wa',
