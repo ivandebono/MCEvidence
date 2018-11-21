@@ -910,7 +910,7 @@ class MCEvidence(object):
         self.logger.info('getting samples for partition %s: nsamples=%s'%(name,nsamples))
         
         if prewhiten:
-            self.logger.debug('Prewhitenning chain partition: %s '%name)
+            self.logger.debug('Prewhitening chain partition: %s '%name)
             try:
                 # Covariance matrix of the samples, and eigenvalues (in w) and eigenvectors (in v):
                 ChainCov = np.cov(s.T)
