@@ -40,6 +40,7 @@ from numpy.linalg import inv
 from numpy.linalg import det
 import logging
 from argparse import ArgumentParser
+import getdist
 
 #====================================
 try:
@@ -140,7 +141,8 @@ class SamplesMIXIN(object):
         if isinstance(str_or_dict,str):                
             fileroot=str_or_dict
             self.logger.info('Loading chain from '+fileroot)                
-            self.data = self.load_from_file(fileroot,**kwargs)            
+            self.data = self.load_from_file(fileroot,**kwargs) 
+          
             
         #MCMC chains are passed as dict, list or tuple
         elif isinstance(str_or_dict,(dict,list,tuple)):
@@ -160,7 +162,8 @@ class SamplesMIXIN(object):
 
         if hasattr(self, 'names'):
             if self.names is None:
-                self.names = ["%s%s"%('p',i) for i in range(ndim)]
+                with open(fileroot+'.paramnames','r') as paramsfile: paramlines=paramsfile.readlines()
+                self.names=[line.split('\t')[0].rstrip('*') for line in paramlines]
         if hasattr(self, 'labels'):                
             if self.labels is None:
                 self.labels =  ["%s_%s"%(self.px,i) for i in range(ndim)]
@@ -169,6 +172,9 @@ class SamplesMIXIN(object):
             self.trueval=None
             
         self.nparamMC=self.get_shape()[1]
+
+        self.fileroot=fileroot
+        
 
 
     def chains2samples(self,**kwargs):
@@ -262,12 +268,18 @@ class SamplesMIXIN(object):
             s2 = gsape(self.data['s2'].samples)   
             return (s1[0]+s2[0],s1[1])
 
+
     def importance_sample(self,func,name='s1'):        
-        #importance sample with external function       
+        #importance sample with external function
+ 
+                   
         self.logger.info('Importance sampling partition: '.format(name))
-        negLogLikes=func(self.data[name].samples)
+
+        #negLogLikes=func(self.data[name].samples)       
+        negLogLikes=func(self,name)
         scale=0 #negLogLikes.min()
         self.data[name].adjusted_weights *= np.exp(-(negLogLikes-scale))                     
+                    
 
     def get_thin_index(self,nthin,weights):
         '''

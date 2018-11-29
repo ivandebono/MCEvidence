@@ -53,11 +53,12 @@ import logging
 from MCEvidence import MCEvidence
 
 
-def h0_gauss_lnp(ParSamples,H0=73.24,H0_Err=1.74):
-    frac=(ParSamples.H0 - H0)/H0_Err
-    return 0.5*((frac**2.0))    
-        
-     
+def h0_gauss_lnp(self,name,H0=73.24,H0_Err=1.74):   
+    indexH0=np.where(np.asarray(self.names)=='H0')[0][0]
+    frac=(self.data[name].samples[:,indexH0] - H0)/H0_Err
+    return 0.5*((frac**2.0))   
+    
+
     
 #---------------------------------------
 #---- Extract command line arguments ---
@@ -170,7 +171,7 @@ if rank==0:
 #---------------------------------------------------
 #------- Path and sub-directory folders ------------
 #---------------------------------------------------
-rootdir='COM_CosmoParams_fullGrid_R2.00'
+rootdir='COM_CosmoParams_fullGrid_R2.00/'
 
 #list of cosmology parameters
 cosmo_params=['omegabh2','omegach2','theta','tau','omegak','mnu','meffsterile','w','wa',
@@ -189,10 +190,10 @@ DataSets=['plikHM_TT_lowTEB','plikHM_TT_lowTEB_post_BAO','plikHM_TT_lowTEB_post_
 # The function avail_model_list() extracts all data names
 # available in the planck fullgrid directory.
 Models={}
-Models['model']=['base','base_omegak','base_Alens','base_Alensf','base_nnu','base_mnu',\
-                 'base_nrun','base_r','base_w','base_alpha1','base_Aphiphi','base_yhe',\
-                 'base_mnu_Alens','base_mnu_omegak','base_mnu_w','base_nnu_mnu',\
-                 'base_nnu_r','base_nrun_r','base_nnu_yhe','base_w_wa',\
+Models['model']=['base','base_omegak','base_Alens','base_Alensf','base_nnu','base_mnu',
+                 'base_nrun','base_r','base_w','base_alpha1','base_Aphiphi','base_yhe',
+                 'base_mnu_Alens','base_mnu_omegak','base_mnu_w','base_nnu_mnu',
+                 'base_nnu_r','base_nrun_r','base_nnu_yhe','base_w_wa',
                  'base_nnu_meffsterile','base_nnu_meffsterile_r']
 
  
@@ -216,6 +217,7 @@ def avail_model_list(dd,nmax=0,sorter=Models['model']):
     '''
     df=pd.DataFrame()
     l=glob.glob( '{0}/*/*/*_{1}_1.txt'.format(rootdir,dd) )
+
     df['l1']=[x.split('_1')[0] for x in l]    
     df['l2']=df['l1'].apply(lambda x:x.split('/')[-3])
     
@@ -234,6 +236,9 @@ def iscosmo_param(p,l=cosmo_params):
     check if parameter 'p' is cosmological or nuisance
     '''
     return p in l
+
+
+
 
 def params_info(fname):
     '''
@@ -341,7 +346,7 @@ for ipp in range(lpp[rank]):  #loop over data
 
             for icc, cext in enumerate(chains_extension_list):
                 fchain=fname+cext
-                e,info = MCEvidence(fchain,ndim=ndim, #isfunc=h0_gauss_lnp,
+                e,info = MCEvidence(fchain,ndim=ndim,isfunc=h0_gauss_lnp,
                                     priorvolume=prior_volume,
                                     kmax=kmax,verbose=verbose,burnlen=burnfrac,
                                     thinlen=thinfrac).evidence(info=True,pos_lnp=False)
