@@ -1483,6 +1483,6 @@ if __name__ == '__main__':
                        thinlen=thinlen)
     mce.evidence()
 
-    print('* ln(E)[k] is the natural logarithm of the Baysian evidence estimated using the kth Nearest Neighbour.')
+    print('* ln(E)[k] is the natural logarithm of the Bayesian evidence estimated using the kth Nearest Neighbour.')
     print('')
 
