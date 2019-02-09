@@ -1,5 +1,7 @@
 #!usr/bin/env python
 """
+Modified by Ivan Debono
+
 Authors : Yabebal Fantaye
 Email : yabi@aims.ac.za
 Affiliation : African Institute for Mathematical Sciences - South Africa
@@ -14,7 +16,7 @@ Python implementation of the evidence estimation from MCMC chains
 as presented in A. Heavens et. al. 2017
 (paper can be found here : https://arxiv.org/abs/1704.03472 ).
 
-This code is tested in Python 2 version 2.7.12 and Python 3 version 3.5.2  
+This code is tested in Python 2 version 2.7.12 and Python 3 version 3.6.6
 """
 
 from __future__ import absolute_import
@@ -1172,7 +1174,7 @@ class MCEvidence(object):
 
         if verbose>0:
             for k in range(1,self.kmax):
-                self.logger.info('   ln(B)[k={}] = {}'.format(k,MLE[k-1]))
+                self.logger.info('   ln(E)[k={}] = {}'.format(k,MLE[k-1]))
             #print('')
         if info:
             return MLE, self.info
@@ -1406,7 +1408,7 @@ if __name__ == '__main__':
                         dest="verbose",
                         default=1,
                         type=int,
-                        help="Increase output verbosity: 0: WARNNINGS, 1: INFO, 2: DEBUG, >2: EVERYTHING")
+                        help="Increase output verbosity: 0: WARNINGS, 1: INFO, 2: DEBUG, >2: EVERYTHING")
 
     parser.add_argument("-pv", "--pvolume",
                         dest="priorvolume",
@@ -1481,6 +1483,6 @@ if __name__ == '__main__':
                        thinlen=thinlen)
     mce.evidence()
 
-    print('* ln(B)[k] is the natural logarithm of the Baysian evidence estimated using the kth Nearest Neighbour.')
+    print('* ln(E)[k] is the natural logarithm of the Baysian evidence estimated using the kth Nearest Neighbour.')
     print('')
 
